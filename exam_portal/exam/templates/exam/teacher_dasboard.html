@@ -1,0 +1,89 @@
+<!-- templates/teacher_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f4f4f4; display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 220px; background-color: #8e44ad; color: white;
+      transition: 0.3s; padding-top: 30px; position: fixed; height: 100%;
+    }
+    .sidebar h2 { text-align: center; margin-bottom: 20px; font-size: 24px; }
+    .sidebar ul { list-style: none; padding-left: 0; }
+    .sidebar ul li {
+      padding: 15px 20px; cursor: pointer;
+    }
+    .sidebar ul li:hover {
+      background-color: #9b59b6;
+    }
+    .main-content {
+      margin-left: 220px; padding: 30px; width: 100%;
+    }
+    .topbar {
+      background-color: white; padding: 10px 20px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    }
+    .topbar h1 { font-size: 22px; }
+    .welcome { margin-top: 20px; }
+    .card {
+      background-color: white; padding: 20px;
+      margin-top: 20px; border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .toggle-btn {
+      display: none; background-color: #8e44ad;
+      color: white; padding: 10px; font-size: 20px;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .sidebar { position: absolute; left: -220px; }
+      .sidebar.active { left: 0; }
+      .main-content { margin-left: 0; }
+      .toggle-btn { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <h2>Teacher Panel</h2>
+    <ul>
+      <li onclick="location.href='/dashboard/'">Dashboard</li>
+      <li onclick="location.href='/add-question/'">Add Questions</li>
+      <li onclick="location.href='/manage-exams/'">Manage Exams</li>
+      <li onclick="location.href='/view-results/'">View Student Results</li>
+      <li onclick="location.href='/logout/'">Logout</li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <span class="toggle-btn" onclick="toggleSidebar()">☰</span>
+      <h1>Welcome Teacher</h1>
+    </div>
+
+    <div class="welcome">
+      <h2>Hello, {{ user.username }}!</h2>
+      <p>You are logged in as <strong>Teacher</strong>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Quick Actions</h3>
+      <ul>
+        <li><a href="/add-question/">➤ Add New Questions</a></li>
+        <li><a href="/manage-exams/">➤ Manage Exams</a></li>
+        <li><a href="/view-results/">➤ Check Results</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
