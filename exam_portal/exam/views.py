@@ -150,3 +150,53 @@ def teacher_login_view(request):
 def teacher_dashboard(request):
     return render(request, 'teacher_dashboard.html')
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+def teacher_login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None and user.groups.filter(name='Teachers').exists():
+            login(request, user)
+            return redirect('teacher_dashboard')
+        else:
+            messages.error(request, 'Invalid credentials or not a teacher.')
+    return render(request, 'teacher_login.html')
+
+@login_required
+def teacher_dashboard(request):
+    return render(request, 'teacher_dashboard.html')
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
+
+def teacher_login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            # Check if user belongs to "Teachers" group
+            if user.groups.filter(name='Teachers').exists():
+                login(request, user)
+                return redirect('teacher_dashboard')  # Make sure this URL name exists
+            else:
+                messages.error(request, 'You are not authorized as a teacher.')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    
+    return render(request, 'teacher_login.html')  # Make sure this template exists
+
+@login_required
+def teacher_dashboard(request):
+    return render(request, 'teacher_dashboard.html')
